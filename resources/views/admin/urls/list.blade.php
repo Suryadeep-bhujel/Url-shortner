@@ -38,7 +38,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="{{ route("urls.show", $url_item->url_code) }}"  target="_blank"  class="badge badge-info" >
+                    <a href="{{ route("urls.show", $url_item->url_code) }}"  target="_blank"  class="btn btn-info" >
                         {{ $url_item->total_clicks }}
                     </a>
                 </td>
@@ -48,7 +48,7 @@
                     </span>
                 </td>
                 <td>
-                    <span class="badge badge-{{ $url_item->status ? 'success' : 'info' }}">
+                    <span class="btn btn-{{ $url_item->status ? 'success' : 'info' }}">
                         {{ $url_item->status ? 'Active' : 'Inactive' }}
                     </span>
                 </td>

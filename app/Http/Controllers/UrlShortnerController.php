@@ -80,7 +80,7 @@ class UrlShortnerController extends Controller
                 'status' => $request->status ?? false,
                 "url_code" => $url_code,
                 "length" => $request->length,
-                "params" => $params['query'],
+                "params" => @$params['query'],
                 'added_by' => auth()->user()->id,
             ];
             $this->url->create($data);
@@ -88,7 +88,7 @@ class UrlShortnerController extends Controller
             $request->session()->flash('success', 'New Url successfully added.');
             return redirect()->route('urls.index');
         } catch (\Throwable$th) {
-            // throw $th;
+            throw $th;
             DB::rollback();
             $request->session()->flash('error', 'There was problem while adding new url.');
         }
@@ -182,7 +182,7 @@ class UrlShortnerController extends Controller
                 'status' => $request->status ?? false,
                 "url_code" => $url_code,
                 "length" => $request->length,
-                "params" => $params['query'],
+                "params" => @$params['query'],
                 // 'added_by' => auth()->user()->id,
             ];
             $url->fill($data)->save();
