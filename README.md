@@ -124,6 +124,6 @@ AdminDataSeeder.php
 
 
 - The live application is hosted in 
-<a href="https://url-shortner.bhujelsuryadeep.com.np/">
+<a href="https://url-shortner.bhujelsuryadeep.com.np/" target="_blank">
 https://url-shortner.bhujelsuryadeep.com.np/
 </a>
