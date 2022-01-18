@@ -70,4 +70,6 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 The application developed in Laravel Framework. Here  hint to install application  on your local hor live server    has  been given 
 
 - Clone the project on your machine using 
-- git clone https://github.com/Suryadeep-bhujel/Url-shortner.git 
+```bash
+ git clone https://github.com/Suryadeep-bhujel/Url-shortner.git 
+ ```
