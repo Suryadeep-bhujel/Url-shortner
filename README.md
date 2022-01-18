@@ -64,3 +64,10 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+## About Application 
+The application developed in Laravel Framework. Here  hint to install application  on your local hor live server    has  been given 
+
+- Clone the project on your machine using 
+- git clone https://github.com/Suryadeep-bhujel/Url-shortner.git 
