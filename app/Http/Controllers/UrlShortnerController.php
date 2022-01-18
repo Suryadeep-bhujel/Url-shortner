@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin\UtmTracking\ShortUrl;
+use App\Models\Admin\UtmTracking\UrlTrackingHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,10 +21,12 @@ class UrlShortnerController extends Controller
     public function index()
     {
         //
-        $urls = $this->url->latest()->paginate();
+        $urls = $this->url
+            ->withCount("history as total_clicks")->latest()->paginate();
         $data = [
             'urls' => $urls,
         ];
+        // dd($urls);
         return view('admin.urls.list', $data);
     }
 
@@ -58,7 +61,7 @@ class UrlShortnerController extends Controller
             'title' => 'required|string',
             'original_url' => "required|url|unique:short_urls,original_url",
             "status" => "required|boolean",
-            'length' => "required|numeric"
+            'length' => "required|numeric",
         ]);
         // dd($request->all());
         try {
@@ -98,7 +101,19 @@ class UrlShortnerController extends Controller
      */
     public function show($id)
     {
-        //
+        $url = $this->url->where('url_code', $id)->first();
+        if (!$url) {
+            request()->session()->flash("error", "Url information not found.");
+            return redirect()->route("urls.index");
+        }
+        // dd($url);
+        $history = UrlTrackingHistory::where('url_id', $url->id)->latest()->paginate(20);
+        // dd($history);
+        $data = [
+            "url" => $url,
+            "history" => $history,
+        ];
+        return view('admin.urls.show', $data);
     }
 
     /**
@@ -111,7 +126,7 @@ class UrlShortnerController extends Controller
     {
         //
         $url = $this->url->where('url_code', $id)->first();
-        if(!$url){
+        if (!$url) {
             request()->session()->flash("error", "Url information not found.");
             return redirect()->route("urls.index");
         }
@@ -134,30 +149,29 @@ class UrlShortnerController extends Controller
      */
     public function update(Request $request, $id)
     {
-       
 
         $url = $this->url->where('url_code', $id)->first();
-        if(!$url){
+        if (!$url) {
             request()->session()->flash("error", "Url information not found.");
             return redirect()->route("urls.index");
         }
-       
+
         $this->validate($request, [
             'title' => 'required|string',
             'original_url' => "required|url|unique:short_urls,original_url,$url->id",
             "status" => "required|boolean",
-            'length' => "required|numeric"
+            'length' => "required|numeric",
         ]);
         try {
             DB::beginTransaction();
             $params = parse_url($request->original_url, $component = -1);
-            $url_code =$url->url_code;
-            if($request->length != $url->length ){
+            $url_code = $url->url_code;
+            if ($request->length != $url->length) {
                 do {
                     $url_code = \Str::random($request->length ?? 6);
                     $repated = $this->url->where("url_code", $url_code)->where("id", '!=', $url->url_code)->first();
                 } while ($repated != null);
-    
+
             }
             // dd($url_code);
             $data = [
@@ -197,6 +211,22 @@ class UrlShortnerController extends Controller
         if (!$url) {
             $request->session()->flash('info', "The Url you are looking for not found.");
             return redirect()->route('index');
+        }
+        dd($request->url());
+        try {
+            // dd($url);
+            DB::beginTransaction();
+            $data = [
+                "url_id" => $url->id,
+                "referral_url" => url()->full(),
+                "ip" => request()->ip(),
+// "country_code" =>
+            ];
+            UrlTrackingHistory::create($data);
+            DB::commit();
+        } catch (\Throwable$th) {
+            //throw $th;
+            DB::rollBack();
         }
         return redirect($url->original_url, 302);
     }

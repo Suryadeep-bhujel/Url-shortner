@@ -26,6 +26,7 @@ Route::group([], function ($router) {
     $router->group(['prefix' => 'dashboard', 'middleware' => ['auth']], function($router){
         $router->get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
         $router->resource('urls', UrlShortnerController::class);
+    
     });
     $router->group([], function($router){
         $router->get('/{code}', [UrlShortnerController::class, 'urlshortner'])->name("urlshortner");

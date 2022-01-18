@@ -12,47 +12,34 @@
         <thead>
             <tr>
                 <th>SN</th>
-                <th>Title</th>
-                <th>Original Url</th>
-                <th>Short Url</th>
-                <th>Total Clicks</th>
-                <th>Params</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>IP Address </th>
+                <th>Referred Url </th>
+                {{-- <th></th> --}}
+                
+            
             </tr>
         </thead>
         <tbody>
-            @if(isset($urls) && $urls->count())
-            @foreach ($urls as $key =>   $url_item)
+            @if(isset($history) && $history->count())
+            @foreach ($history as $key =>   $historyItem)
+                
             <tr>
                 <td>{{ $key +1 }}</td>
-                <td>{{ $url_item->title }}</td>
-                <td>
+                <td>{{ $historyItem->ip }}</td>
+                {{-- <td>
                     <a href="{{ $url_item->original_url }}"  target="_blank" style="word-break: break-all">
                         {{ $url_item->original_url }}
                     </a>
-                </td>
+                </td> --}}
+                
                 <td>
-                    <a href="{{ route("urlshortner", $url_item->url_code) }}"  target="_blank" >
-                        {{ route("urlshortner", $url_item->url_code) }}
-                    </a>
+                    {{-- <a href="{{ route("urls.show", $url_item->url_code) }}"  target="_blank"  class="badge badge-info" >
+                    </a> --}}
+                    {{ $historyItem->referral_url }}
                 </td>
-                <td>
-                    <a href="{{ route("urls.show", $url_item->url_code) }}"  target="_blank"  class="badge badge-info" >
-                        {{ $url_item->total_clicks }}
-                    </a>
-                </td>
-                <td>
-                    <span class="" style="word-break: break-all">
-                        {{ $url_item->params }}
-                    </span>
-                </td>
-                <td>
-                    <span class="badge badge-{{ $url_item->status ? 'success' : 'info' }}">
-                        {{ $url_item->status ? 'Active' : 'Inactive' }}
-                    </span>
-                </td>
-                <td>
+                 
+                
+                {{-- <td>
                     <div class="btn-group">
                         <a href="{{ route('urls.edit', $url_item->url_code) }}" class="btn btn-info  btn-sm">
                         Edit
@@ -63,9 +50,8 @@
                         </Form>
 
                     </div>
-                </td>
+                </td> --}}
             </tr>
-                
             @endforeach
                 
             @endif
