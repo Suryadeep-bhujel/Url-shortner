@@ -67,9 +67,63 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 
 ## About Application 
+### prerequisites
+- Composer 
+- PHP 7.4 or 8.*
+- MySql for easier process XAMPP  will be best UI 
+
+
+## Installation of application
+This process is for cloning project from GIT. 
 The application developed in Laravel Framework. Here  hint to install application  on your local hor live server    has  been given 
 
 - Clone the project on your machine using 
 ```bash
  git clone https://github.com/Suryadeep-bhujel/Url-shortner.git 
  ```
+ - Run the command to update composer 
+ ``bash 
+ composer update 
+ ```
+- After successfully composer update run the Artisan  command to generate the application key 
+```bash 
+php artisan key:generate
+```
+- Now run the artisan command 
+```bash
+cp .env.example .env
+```
+<p>Above command will copy the  example environment file  to  .env file </p>
+<p>db name 
+```bash 
+url_shortner
+``` will be the database but you can change the database as your requirement. The env file will  be in root dir with the name 
+```bash 
+.env
+```. Set db username and password (in localhost using windows  does not have password  most of the time.)
+</p>
+- After setting all of them Run the migration command 
+```bash 
+php artisan migrate
+```
+```bash 
+php artisan db:seed 
+```
+<p>Above command will migrate the database  tables into datbase and second command will seed  prefixed data into database .In this application only one user has been seeded.</p>
+- Now run the command 
+```bash 
+php artisan serve 
+``` 
+<p>for starting application.</p>
+-You will get the username and password inside 
+```php
+AdminDataSeeder.php
+```
+- Use the username and password to get logged in. 
+- There is total count button appears in dashboard. click on the link to add edit and view all url history 
+
+
+- The live application is hosted in 
+<a href="https://url-shortner.bhujelsuryadeep.com.np/">
+https://url-shortner.bhujelsuryadeep.com.np/
+</a>
