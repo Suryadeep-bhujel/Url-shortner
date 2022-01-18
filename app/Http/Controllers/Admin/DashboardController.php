@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\UtmTracking\ShortUrl;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -13,7 +14,7 @@ class DashboardController extends Controller
         
     }
     public function dashboard(){
-
-        return view('admin.dashboard');
+        $urls = ShortUrl::count();
+        return view('admin.dashboard', compact('urls'));
     }
 }

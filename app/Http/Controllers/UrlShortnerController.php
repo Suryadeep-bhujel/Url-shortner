@@ -22,7 +22,8 @@ class UrlShortnerController extends Controller
     {
         //
         $urls = $this->url
-            ->withCount("history as total_clicks")->latest()->paginate();
+            ->withCount("history as total_clicks")
+            ->latest()->paginate();
         $data = [
             'urls' => $urls,
         ];
@@ -101,14 +102,15 @@ class UrlShortnerController extends Controller
      */
     public function show($id)
     {
-        $url = $this->url->where('url_code', $id)->first();
+        $url = $this->url->where('url_code', $id)
+        ->withCount("history as total_clicks")
+        ->first();
         if (!$url) {
             request()->session()->flash("error", "Url information not found.");
             return redirect()->route("urls.index");
         }
         // dd($url);
         $history = UrlTrackingHistory::where('url_id', $url->id)->latest()->paginate(20);
-        // dd($history);
         $data = [
             "url" => $url,
             "history" => $history,
@@ -212,20 +214,20 @@ class UrlShortnerController extends Controller
             $request->session()->flash('info', "The Url you are looking for not found.");
             return redirect()->route('index');
         }
-        dd($request->url());
+        //  dd($request->all());
         try {
             // dd($url);
             DB::beginTransaction();
             $data = [
                 "url_id" => $url->id,
-                "referral_url" => url()->full(),
+                "referral_url" => url()->previous(),
                 "ip" => request()->ip(),
-// "country_code" =>
+                "params" => json_encode($request->all())
             ];
             UrlTrackingHistory::create($data);
             DB::commit();
         } catch (\Throwable$th) {
-            //throw $th;
+            throw $th;
             DB::rollBack();
         }
         return redirect($url->original_url, 302);

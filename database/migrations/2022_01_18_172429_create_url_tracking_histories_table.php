@@ -18,6 +18,7 @@ class CreateUrlTrackingHistoriesTable extends Migration
             $table->unsignedBigInteger('url_id')->index();
             $table->string('referral_url')->nullable();
             $table->string('ip')->nullable();
+            $table->text('params')->nullable();
             $table->string('country_code')->nullable()->index();
             $table->timestamps();
         });
